@@ -1,0 +1,74 @@
+body { 
+  font-family: Arial, sans-serif; 
+  margin: 0; 
+  padding: 0; 
+}
+header { 
+  display: flex; 
+  justify-content: space-between; 
+  padding: 20px 50px; 
+  background-color: #333; 
+  color: white; 
+}
+header nav ul { 
+  list-style-type: none; 
+  padding: 0; 
+  display: flex; 
+  gap: 20px; 
+}
+header nav a { 
+  color: white; 
+  text-decoration: none; 
+}
+.banner { 
+  background-color: #eee; 
+  text-align: center; 
+  padding: 100px 0; 
+}
+.banner h1 { 
+  font-size: 2.5em; 
+  margin-bottom: 20px; 
+}
+.banner button { 
+  padding: 10px 20px; 
+  font-size: 1em; 
+  cursor: pointer; 
+}
+.services { 
+  display: flex; 
+  justify-content: space-around; 
+  padding: 50px 0; 
+}
+.card { 
+  text-align: center; 
+}
+.card img { 
+  width: 100px; 
+  height: 100px; 
+}
+.portfolio { 
+  padding: 50px 0; 
+  text-align: center; 
+}
+.project { 
+  display: inline-block; 
+  margin: 20px; 
+}
+footer { 
+  background-color: #333; 
+  color: white; 
+  text-align: center; 
+  padding: 20px 0; 
+}
+footer a { 
+  color: white; 
+  text-decoration: none; 
+  margin: 0 10px; 
+}
+p, a, span, h1 {
+  font-family: 'Roboto', Times, serif;
+}
+a {
+  font-size: 1.5vw;
+}
+
