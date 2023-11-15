@@ -3,28 +3,17 @@ body {
   margin: 0; 
   padding: 0; 
 }
-header { 
-  display: flex; 
-  justify-content: space-between; 
-  padding: 20px 50px; 
-  background-color: #333; 
-  color: white; 
-}
+
 header nav ul { 
   list-style-type: none; 
   padding: 0; 
   display: flex; 
-  gap: 20px; 
 }
 header nav a { 
   color: white; 
   text-decoration: none; 
 }
-.banner { 
-  background-color: #eee; 
-  text-align: center; 
-  padding: 100px 0; 
-}
+
 .banner h1 { 
   font-size: 2.5em; 
   margin-bottom: 20px; 
@@ -71,4 +60,17 @@ p, a, span, h1 {
 a {
   font-size: 1.5vw;
 }
-
+.triangleLeft {
+  width: 0;
+  height: 0;
+  border-right: 100vw solid transparent;
+  border-top: 350px solid #00B0A3;
+  position: absolute;
+}
+.triangleRight {
+  width: 0;
+  height: 0;
+  border-left: 100vw solid transparent;
+  border-top: 200px solid #0000B7;
+  position: relative;
+}

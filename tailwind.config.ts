@@ -1,12 +1,16 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  content: ["./src/components/**/*.{js,ts,jsx,tsx,mdx}", "./src/pages/**/*.{js,ts,jsx,tsx,mdx}"],
+  content: ["./app/components/**/*.{js,ts,jsx,tsx,mdx}", "./app/**/*.{js,ts,jsx,tsx,mdx}"],
+
   theme: {
     extend: {
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      },
+      experimental: {
+        serverActions: true,
       },
       colors: {
         primary: {
@@ -45,13 +49,21 @@ const config: Config = {
       },
       width: {
         "128": "36.2rem",
+        "120": "30rem",
         "45": "28.8rem",
+        "130": "40rem",
       },
       height: {
-        "150": "35rem",
+        "150": "20rem",
+        "140": "18rem",
+      },
+      screens: {
+        android: "700px",
+        tablet: "900px",
       },
     },
   },
+
   plugins: [],
 };
 export default config;
