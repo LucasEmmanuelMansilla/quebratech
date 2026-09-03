@@ -26,7 +26,10 @@ export async function POST(request: Request) {
       const upstream = await fetch(contactApiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ formData: payload }),
+        body: JSON.stringify({
+          formData: payload,
+          to: process.env.CONTACT_TO_EMAIL ?? "lucas_e_93@hotmail.com",
+        }),
       });
 
       if (!upstream.ok) {

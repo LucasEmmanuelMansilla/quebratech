@@ -54,7 +54,7 @@ export const brand = {
   name: "quebratech",
   displayName: "Quebratech",
   tagline: "Software Factory",
-  email: "info@quebratech.com.ar",
+  email: "lucas_e_93@hotmail.com",
   social: {
     linkedin: "https://www.linkedin.com/company/quebratech",
     instagram: "https://www.instagram.com/quebratech_/",
@@ -265,8 +265,7 @@ export const contactSection = {
     "Completá el formulario con el contexto de tu negocio. Te respondemos con una mirada concreta sobre cómo encarar la solución.",
   successMessage:
     "Recibimos tu consulta. Nos vamos a contactar a la brevedad para entender tu desafío.",
-  errorMessage:
-    "No pudimos enviar el mensaje. Probá de nuevo o escribinos a info@quebratech.com.ar.",
+  errorMessage: `No pudimos enviar el mensaje. Probá de nuevo o escribinos a ${brand.email}.`,
 } as const;
 
 export const footer = {

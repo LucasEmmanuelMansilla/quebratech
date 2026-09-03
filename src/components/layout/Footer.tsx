@@ -62,12 +62,6 @@ export function Footer() {
               <Image src="/instagram.svg" alt="" width={28} height={28} />
             </a>
           </div>
-          <a
-            href={`mailto:${brand.email}`}
-            className="mt-4 block text-sm text-white/80 transition hover:text-white"
-          >
-            {brand.email}
-          </a>
         </div>
       </Container>
 
