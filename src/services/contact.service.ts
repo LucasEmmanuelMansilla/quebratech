@@ -1,3 +1,4 @@
+import { brand } from "@/content/marketing";
 import type { ContactPayload, ContactResult } from "@/types/contact";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -13,35 +14,82 @@ export function validateContactPayload(payload: ContactPayload): string | null {
   return null;
 }
 
+type FormSubmitResponse = {
+  success?: boolean | string;
+  message?: string;
+};
+
+function formSubmitEndpoint() {
+  return `https://formsubmit.co/ajax/${encodeURIComponent(brand.email)}`;
+}
+
+function interpretFormSubmitResponse(data: FormSubmitResponse): ContactResult {
+  const rawMessage = data.message?.trim() ?? "";
+  const success = data.success === true || data.success === "true";
+
+  if (/activat/i.test(rawMessage)) {
+    return {
+      ok: true,
+      message: `Revisá ${brand.email} (incluida la carpeta de spam) y hacé clic en el enlace para activar el formulario. Después de eso, cada consulta te llega a ese correo.`,
+    };
+  }
+
+  if (success) {
+    return { ok: true };
+  }
+
+  return {
+    ok: false,
+    message: rawMessage || "No pudimos enviar tu consulta.",
+  };
+}
+
 /**
- * Facade over the contact transport.
- * Keeps UI free of API details and enables swapping providers later.
+ * Sends the contact form from the browser to the personal inbox.
+ * No Next.js API route or custom mail server is involved.
  */
-export async function submitContact(payload: ContactPayload): Promise<ContactResult> {
+export async function submitContact(
+  payload: ContactPayload,
+  honeypot = "",
+): Promise<ContactResult> {
   const validationError = validateContactPayload(payload);
   if (validationError) {
     return { ok: false, message: validationError };
   }
 
+  if (honeypot.trim()) {
+    return { ok: true };
+  }
+
   try {
-    const response = await fetch("/api/contact", {
+    const response = await fetch(formSubmitEndpoint(), {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        Nombre: payload.name,
+        email: payload.email,
+        Empresa: payload.company.trim() || "No indicada",
+        Mensaje: payload.message,
+        _subject: `Nueva consulta de ${payload.name} — ${brand.displayName}`,
+        _template: "table",
+        _captcha: "false",
+        _replyto: payload.email,
+      }),
     });
 
-    const data = (await response.json().catch(() => ({}))) as {
-      message?: string;
-    };
+    const data = (await response.json().catch(() => ({}))) as FormSubmitResponse;
 
-    if (!response.ok) {
+    if (!response.ok && data.success === undefined) {
       return {
         ok: false,
         message: data.message ?? "No pudimos enviar tu consulta.",
       };
     }
 
-    return { ok: true, message: data.message };
+    return interpretFormSubmitResponse(data);
   } catch {
     return { ok: false, message: "Error de conexión. Intentá nuevamente." };
   }
