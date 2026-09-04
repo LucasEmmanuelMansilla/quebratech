@@ -19,6 +19,7 @@ const initialState: ContactPayload = {
 
 export function ContactSection() {
   const [form, setForm] = useState<ContactPayload>(initialState);
+  const [honeypot, setHoneypot] = useState("");
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [feedback, setFeedback] = useState("");
@@ -36,13 +37,14 @@ export function ContactSection() {
     setStatus("idle");
     setFeedback("");
 
-    const result = await submitContact(form);
+    const result = await submitContact(form, honeypot);
     setLoading(false);
 
     if (result.ok) {
       setStatus("success");
-      setFeedback(contactSection.successMessage);
+      setFeedback(result.message ?? contactSection.successMessage);
       setForm(initialState);
+      setHoneypot("");
       return;
     }
 
@@ -65,6 +67,19 @@ export function ContactSection() {
           className="rounded-3xl border border-neutral-darker/50 bg-white p-6 shadow-xl shadow-primary/5 sm:p-8"
           noValidate
         >
+          <div className="hidden" aria-hidden="true">
+            <label htmlFor="website">Sitio web</label>
+            <input
+              id="website"
+              type="text"
+              name="website"
+              tabIndex={-1}
+              autoComplete="off"
+              value={honeypot}
+              onChange={(event) => setHoneypot(event.target.value)}
+            />
+          </div>
+
           <div className="grid gap-5 sm:grid-cols-2">
             <Field
               id="name"

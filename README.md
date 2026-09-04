@@ -11,15 +11,11 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
-## Contact API
+## Contact form
 
-Optional mail relay:
+The contact form sends from the browser to `lucas_e_93@hotmail.com`. There is no Next.js API route.
 
-```bash
-CONTACT_API_URL=https://your-mail-api.example.com/api/sendMail
-```
-
-Copy `.env.example` to `.env.local` and fill values as needed.
+The first submission sends an activation email to that inbox. Confirm it (check spam/junk in Hotmail) and later messages arrive normally.
 
 ## Scripts
 
