@@ -57,7 +57,7 @@ export const brand = {
   email: "lucas_e_93@hotmail.com",
   social: {
     linkedin: "https://www.linkedin.com/company/quebratech",
-    instagram: "https://www.instagram.com/quebratech_/",
+    instagram: "https://www.instagram.com/quebratech/",
   },
 } as const;
 
