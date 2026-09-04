@@ -23,17 +23,25 @@ function formSubmitEndpoint() {
   return `https://formsubmit.co/ajax/${encodeURIComponent(brand.email)}`;
 }
 
-function interpretFormSubmitResponse(data: FormSubmitResponse): ContactResult {
-  const rawMessage = data.message?.trim() ?? "";
-  const success = data.success === true || data.success === "true";
+function formPageUrl() {
+  if (typeof window === "undefined") return undefined;
+  return `${window.location.origin}${window.location.pathname}`;
+}
 
-  if (success) {
+function isFormSubmitAccepted(data: FormSubmitResponse): boolean {
+  if (data.success === true || data.success === "true") return true;
+  // FormSubmit often replies with this even after the inbox is already receiving mail.
+  return /activat/i.test(data.message ?? "");
+}
+
+function interpretFormSubmitResponse(data: FormSubmitResponse): ContactResult {
+  if (isFormSubmitAccepted(data)) {
     return { ok: true };
   }
 
   return {
     ok: false,
-    message: rawMessage || "No pudimos enviar tu consulta.",
+    message: "No pudimos enviar tu consulta.",
   };
 }
 
@@ -70,6 +78,7 @@ export async function submitContact(
         _template: "table",
         _captcha: "false",
         _replyto: payload.email,
+        _url: formPageUrl(),
       }),
     });
 
@@ -78,7 +87,7 @@ export async function submitContact(
     if (!response.ok && data.success === undefined) {
       return {
         ok: false,
-        message: data.message ?? "No pudimos enviar tu consulta.",
+        message: "No pudimos enviar tu consulta.",
       };
     }
 
