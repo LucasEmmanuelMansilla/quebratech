@@ -27,13 +27,6 @@ function interpretFormSubmitResponse(data: FormSubmitResponse): ContactResult {
   const rawMessage = data.message?.trim() ?? "";
   const success = data.success === true || data.success === "true";
 
-  if (/activat/i.test(rawMessage)) {
-    return {
-      ok: true,
-      message: `Revisá ${brand.email} (incluida la carpeta de spam) y hacé clic en el enlace para activar el formulario. Después de eso, cada consulta te llega a ese correo.`,
-    };
-  }
-
   if (success) {
     return { ok: true };
   }
