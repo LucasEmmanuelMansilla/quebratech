@@ -1,8 +1,14 @@
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { processSection, processSteps } from "@/content/marketing";
+import { getCopy } from "@/content/marketing";
+import type { Audience } from "@/content/types";
 
-export function ProcessSection() {
+type ProcessSectionProps = {
+  audience: Audience;
+};
+
+export function ProcessSection({ audience }: ProcessSectionProps) {
+  const { processSection, processSteps } = getCopy(audience);
   return (
     <section id="proceso" className="bg-secondary py-16 text-white sm:py-24">
       <Container>

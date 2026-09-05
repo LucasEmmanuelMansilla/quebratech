@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { LandingPage } from "@/components/landing/LandingPage";
 import { getCopy } from "@/content/marketing";
 
-const copy = getCopy("comercios");
+const copy = getCopy("pymes");
 
 export const metadata: Metadata = {
   title: {
@@ -16,6 +16,6 @@ export const metadata: Metadata = {
   },
 };
 
-export default function HomePage() {
-  return <LandingPage audience="comercios" />;
+export default function PymesPage() {
+  return <LandingPage audience="pymes" />;
 }

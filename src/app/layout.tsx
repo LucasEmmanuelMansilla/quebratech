@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Geist, Geist_Mono } from "next/font/google";
-import { brand } from "@/content/marketing";
+import { brand, getCopy } from "@/content/marketing";
 import "./globals.css";
+
+const homeCopy = getCopy("comercios");
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,23 +25,15 @@ const anta = localFont({
 
 export const metadata: Metadata = {
   title: {
-    default: `${brand.displayName} | Software Factory`,
+    default: homeCopy.seo.title,
     template: `%s | ${brand.displayName}`,
   },
-  description:
-    "Quebratech es una software factory que convierte fricciones del negocio en productos digitales claros, útiles y listos para escalar.",
-  keywords: [
-    "software factory",
-    "desarrollo de software",
-    "productos digitales",
-    "aplicaciones a medida",
-    "Quebratech",
-  ],
+  description: homeCopy.seo.description,
+  keywords: homeCopy.seo.keywords,
   authors: [{ name: brand.displayName }],
   openGraph: {
-    title: `${brand.displayName} | Software Factory`,
-    description:
-      "Diseñamos y construimos software que resuelve problemas reales de operación, crecimiento y experiencia digital.",
+    title: homeCopy.seo.title,
+    description: homeCopy.seo.description,
     type: "website",
     locale: "es_AR",
     siteName: brand.displayName,

@@ -1,22 +1,59 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
+import type { MouseEvent } from "react";
 import { BrandLogo } from "@/components/ui/BrandLogo";
 import { Container } from "@/components/ui/Container";
-import { brand, footer, navItems } from "@/content/marketing";
+import { audienceLinks, brand, getCopy } from "@/content/marketing";
+import type { Audience } from "@/content/types";
+import { cn } from "@/lib/cn";
 import { scrollToId, scrollToTop } from "@/lib/scroll";
 
-export function Footer() {
+type FooterProps = {
+  audience: Audience;
+};
+
+export function Footer({ audience }: FooterProps) {
+  const copy = getCopy(audience);
   const year = new Date().getFullYear();
+
+  const onLogoClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    scrollToTop();
+  };
 
   return (
     <footer className="border-t border-white/10 bg-primary text-white">
       <Container className="grid gap-10 py-12 md:grid-cols-[1.4fr_1fr_auto]">
         <div>
-          <BrandLogo inverted onClick={scrollToTop} />
+          <BrandLogo inverted href={copy.homeHref} onClick={onLogoClick} />
           <p className="mt-4 max-w-md text-sm leading-relaxed text-white/75">
-            {footer.blurb}
+            {copy.footer.blurb}
           </p>
+          <div
+            className="mt-5 inline-flex rounded-lg border border-white/15 bg-white/5 p-0.5"
+            aria-label="Elegí el tipo de negocio"
+          >
+            {audienceLinks.map((item) => {
+              const isActive = item.audience === audience;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={cn(
+                    "rounded-md px-2.5 py-1 text-xs font-semibold transition-colors",
+                    isActive
+                      ? "bg-tertiary text-secondary"
+                      : "text-white/75 hover:bg-white/10 hover:text-white",
+                  )}
+                  aria-current={isActive ? "page" : undefined}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
+          </div>
         </div>
 
         <div>
@@ -24,7 +61,7 @@ export function Footer() {
             Navegación
           </p>
           <ul className="mt-4 space-y-2">
-            {navItems.map((item) => (
+            {copy.navItems.map((item) => (
               <li key={item.id}>
                 <button
                   type="button"

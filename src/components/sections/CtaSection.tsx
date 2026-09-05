@@ -3,10 +3,16 @@
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
-import { ctaSection } from "@/content/marketing";
+import { getCopy } from "@/content/marketing";
+import type { Audience } from "@/content/types";
 import { scrollToId } from "@/lib/scroll";
 
-export function CtaSection() {
+type CtaSectionProps = {
+  audience: Audience;
+};
+
+export function CtaSection({ audience }: CtaSectionProps) {
+  const { ctaSection } = getCopy(audience);
   return (
     <section className="bg-white py-10 sm:py-14">
       <Container>

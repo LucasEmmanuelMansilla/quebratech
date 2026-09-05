@@ -1,9 +1,15 @@
 import { Card } from "@/components/ui/Card";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { differentials, differentialsSection } from "@/content/marketing";
+import { getCopy } from "@/content/marketing";
+import type { Audience } from "@/content/types";
 
-export function DifferentialsSection() {
+type DifferentialsSectionProps = {
+  audience: Audience;
+};
+
+export function DifferentialsSection({ audience }: DifferentialsSectionProps) {
+  const { differentials, differentialsSection } = getCopy(audience);
   return (
     <section className="bg-surface py-16 sm:py-24">
       <Container>

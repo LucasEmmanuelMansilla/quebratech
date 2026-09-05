@@ -4,10 +4,16 @@ import Image from "next/image";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
-import { hero } from "@/content/marketing";
+import { getCopy } from "@/content/marketing";
+import type { Audience } from "@/content/types";
 import { scrollToId } from "@/lib/scroll";
 
-export function HeroSection() {
+type HeroSectionProps = {
+  audience: Audience;
+};
+
+export function HeroSection({ audience }: HeroSectionProps) {
+  const { hero } = getCopy(audience);
   return (
     <section
       id="inicio"
