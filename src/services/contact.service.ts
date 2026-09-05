@@ -1,4 +1,5 @@
-import { brand } from "@/content/marketing";
+import { brand, getCopy } from "@/content/marketing";
+import type { Audience } from "@/content/types";
 import type { ContactPayload, ContactResult } from "@/types/contact";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -9,7 +10,7 @@ export function validateContactPayload(payload: ContactPayload): string | null {
     return "Ingresá un correo electrónico válido.";
   }
   if (!payload.message.trim() || payload.message.trim().length < 10) {
-    return "Contanos un poco más sobre tu desafío (mínimo 10 caracteres).";
+    return "Contanos un poco más sobre lo que querés resolver (mínimo 10 caracteres).";
   }
   return null;
 }
@@ -45,6 +46,11 @@ function interpretFormSubmitResponse(data: FormSubmitResponse): ContactResult {
   };
 }
 
+type SubmitContactOptions = {
+  source: Audience;
+  companyLabel: string;
+};
+
 /**
  * Sends the contact form from the browser to the personal inbox.
  * No Next.js API route or custom mail server is involved.
@@ -52,6 +58,10 @@ function interpretFormSubmitResponse(data: FormSubmitResponse): ContactResult {
 export async function submitContact(
   payload: ContactPayload,
   honeypot = "",
+  options: SubmitContactOptions = {
+    source: "comercios",
+    companyLabel: "Negocio / Rubro",
+  },
 ): Promise<ContactResult> {
   const validationError = validateContactPayload(payload);
   if (validationError) {
@@ -61,6 +71,8 @@ export async function submitContact(
   if (honeypot.trim()) {
     return { ok: true };
   }
+
+  const copy = getCopy(options.source);
 
   try {
     const response = await fetch(formSubmitEndpoint(), {
@@ -72,9 +84,10 @@ export async function submitContact(
       body: JSON.stringify({
         Nombre: payload.name,
         email: payload.email,
-        Empresa: payload.company.trim() || "No indicada",
+        [options.companyLabel]: payload.company.trim() || "No indicado",
         Mensaje: payload.message,
-        _subject: `Nueva consulta de ${payload.name} — ${brand.displayName}`,
+        Origen: copy.sourceLabel,
+        _subject: `Nueva consulta de ${payload.name} — ${brand.displayName} (${copy.sourceLabel})`,
         _template: "table",
         _captcha: "false",
         _replyto: payload.email,

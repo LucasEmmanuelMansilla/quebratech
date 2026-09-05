@@ -1,9 +1,15 @@
 import { Card } from "@/components/ui/Card";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { painPoints, painSection } from "@/content/marketing";
+import { getCopy } from "@/content/marketing";
+import type { Audience } from "@/content/types";
 
-export function ProblemSection() {
+type ProblemSectionProps = {
+  audience: Audience;
+};
+
+export function ProblemSection({ audience }: ProblemSectionProps) {
+  const { painPoints, painSection } = getCopy(audience);
   return (
     <section id="problemas" className="bg-surface py-16 sm:py-24">
       <Container>

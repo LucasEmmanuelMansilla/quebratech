@@ -1,14 +1,22 @@
 import Image from "next/image";
+import Link from "next/link";
+import type { MouseEvent } from "react";
 import { cn } from "@/lib/cn";
-import { brand } from "@/content/marketing";
+import { brand } from "@/content/brand";
 
 type BrandLogoProps = {
   className?: string;
   inverted?: boolean;
-  onClick?: () => void;
+  href?: string;
+  onClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
 };
 
-export function BrandLogo({ className, inverted = false, onClick }: BrandLogoProps) {
+export function BrandLogo({
+  className,
+  inverted = false,
+  href,
+  onClick,
+}: BrandLogoProps) {
   const content = (
     <>
       <span className="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-lg ring-1 ring-white/20">
@@ -32,20 +40,18 @@ export function BrandLogo({ className, inverted = false, onClick }: BrandLogoPro
     </>
   );
 
-  if (onClick) {
+  if (href) {
     return (
-      <button
-        type="button"
+      <Link
+        href={href}
         onClick={onClick}
         className={cn("inline-flex items-center gap-2.5", className)}
         aria-label={`${brand.displayName} — ir al inicio`}
       >
         {content}
-      </button>
+      </Link>
     );
   }
 
-  return (
-    <div className={cn("inline-flex items-center gap-2.5", className)}>{content}</div>
-  );
+  return <div className={cn("inline-flex items-center gap-2.5", className)}>{content}</div>;
 }

@@ -2,9 +2,15 @@ import { Check } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { solutions, solutionsSection } from "@/content/marketing";
+import { getCopy } from "@/content/marketing";
+import type { Audience } from "@/content/types";
 
-export function SolutionsSection() {
+type SolutionsSectionProps = {
+  audience: Audience;
+};
+
+export function SolutionsSection({ audience }: SolutionsSectionProps) {
+  const { solutions, solutionsSection } = getCopy(audience);
   return (
     <section id="soluciones" className="bg-white py-16 sm:py-24">
       <Container>

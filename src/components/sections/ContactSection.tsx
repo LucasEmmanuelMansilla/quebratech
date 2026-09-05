@@ -5,7 +5,8 @@ import { Loader2, Send } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { contactSection } from "@/content/marketing";
+import { getCopy } from "@/content/marketing";
+import type { Audience } from "@/content/types";
 import { cn } from "@/lib/cn";
 import { submitContact } from "@/services/contact.service";
 import type { ContactPayload } from "@/types/contact";
@@ -17,7 +18,12 @@ const initialState: ContactPayload = {
   message: "",
 };
 
-export function ContactSection() {
+type ContactSectionProps = {
+  audience: Audience;
+};
+
+export function ContactSection({ audience }: ContactSectionProps) {
+  const { contactSection, contactForm } = getCopy(audience);
   const [form, setForm] = useState<ContactPayload>(initialState);
   const [honeypot, setHoneypot] = useState("");
   const [loading, setLoading] = useState(false);
@@ -37,7 +43,10 @@ export function ContactSection() {
     setStatus("idle");
     setFeedback("");
 
-    const result = await submitContact(form, honeypot);
+    const result = await submitContact(form, honeypot, {
+      source: audience,
+      companyLabel: contactForm.companyLabel,
+    });
     setLoading(false);
 
     if (result.ok) {
@@ -105,7 +114,7 @@ export function ContactSection() {
           <div className="mt-5">
             <Field
               id="company"
-              label="Empresa"
+              label={contactForm.companyLabel}
               name="company"
               value={form.company}
               onChange={onChange}
@@ -118,7 +127,7 @@ export function ContactSection() {
               htmlFor="message"
               className="mb-2 block text-sm font-semibold text-primary"
             >
-              ¿Qué problema necesitás resolver?
+              {contactForm.messageLabel}
             </label>
             <textarea
               id="message"
@@ -127,7 +136,7 @@ export function ContactSection() {
               value={form.message}
               onChange={onChange}
               required
-              placeholder="Ej.: Estamos creciendo y la operación se nos va de las manos con planillas y procesos manuales..."
+              placeholder={contactForm.messagePlaceholder}
               className="w-full resize-none rounded-xl border border-neutral-darker/70 bg-white px-4 py-3 text-secondary outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
             />
           </div>
@@ -155,7 +164,7 @@ export function ContactSection() {
                 </>
               ) : (
                 <>
-                  Enviar consulta
+                  {contactForm.submitLabel}
                   <Send size={16} />
                 </>
               )}
